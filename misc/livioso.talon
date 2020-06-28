@@ -1,0 +1,27 @@
+fullscreen: key(ctrl-cmd-f)
+discord mute: key(ctrl-cmd-t)
+spotlight: key(cmd-space)
+slap: key(enter)
+
+vim insert: key(i)
+vim append: key(a)
+vim save: key(: w enter)
+vim close: key(esc space q)
+vim files: key(esc space j)
+vim split: key(esc space v)
+vim toggle: key(ctrl-w ctrl-w)
+vim delete line: key(esc dd)
+vim undo: key(esc u)
+vim redo: key(esc ctrl-r)
+vim go line: key(g g)
+vim go definition: key(g g d)
+vim format: key(g g f)
+vim visual line: key(v)
+
+fish complete: key(ctrl-f)
+
+(delete | trash) (token | word): key(ctrl-w)
+prefix: key(ctrl-space)
+jump:
+  key(j)
+  insert(' ')
