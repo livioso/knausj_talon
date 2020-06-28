@@ -1,10 +1,14 @@
 from talon import Module, Context, actions, ui, imgui
 from talon.grammar import Phrase
+from typing import List, Union
 
 ctx = Context()
 key = actions.key
 
 words_to_keep_lowercase = "a,an,the,at,by,for,in,is,of,on,to,up,and,as,but,or,nor".split(",")
+
+last_formatted_phrase = ""
+last_phrase = ""
 
 def surround(by):
     def func(i, word, last):
@@ -16,18 +20,24 @@ def surround(by):
 
     return func
 
-def FormatText(m, fmtrs: str):
-    if m.words[-1] == "over":
-        m.words = m.words[:-1]
-    try:
-        words = actions.dictate.parse_words(m)
-        words = actions.dictate.replace_words(words)
-    except AttributeError:
-        with clip.capture() as s:
-            edit.copy()
-        words = s.get().split(" ")
-        if not words:
-            return
+def FormatText(m: Union[str, Phrase], fmtrs: str):
+    global last_phrase
+    last_phrase = m
+    words = []
+    if isinstance(m, str):
+        words = m.split(' ')
+    else:
+        if m.words[-1] == "over":
+            m.words = m.words[:-1]
+        try:
+            words = actions.dictate.parse_words(m)
+            words = actions.dictate.replace_words(words)
+        except AttributeError:
+            with clip.capture() as s:
+                edit.copy()
+                words = s.get().split(" ")
+            if not words:
+                return
     
     return format_text_helper(words, fmtrs)
 
@@ -46,7 +56,11 @@ def format_text_helper(word_list, fmtrs: str):
     sep = " "
     if not spaces:
         sep = ""
-    return sep.join(words)
+    result = sep.join(words)
+
+    global last_formatted_phrase
+    last_formatted_phrase = result
+    return result
 
 NOSEP = True
 SEP   = False
@@ -78,6 +92,7 @@ def every_word(word_func):
     return formatter_function
 
 formatters_dict = {
+    "NOOP": (SEP, lambda i, word, _: word),
     "DOUBLE_UNDERSCORE": (NOSEP, first_vs_rest(lambda w: "__%s__" % w)),
     "PRIVATE_CAMEL_CASE": (NOSEP, first_vs_rest(lambda w: w, lambda w: w.capitalize())),
     "PUBLIC_CAMEL_CASE": (NOSEP, every_word(lambda w: w.capitalize())),
@@ -101,6 +116,8 @@ formatters_dict = {
 
 # This is the mapping from spoken phrases to formatters
 formatters_words = {
+    "say": formatters_dict["NOOP"],
+    "speak": formatters_dict["NOOP"],
     "dunder": formatters_dict["DOUBLE_UNDERSCORE"],
     "camel": formatters_dict["PRIVATE_CAMEL_CASE"],
     "hammer": formatters_dict["PUBLIC_CAMEL_CASE"],
@@ -141,30 +158,40 @@ def format_text(m) -> str:
 
 @mod.action_class
 class Actions:
-    def formatted_text(phrase: Phrase, formatters: str) -> str:
+    def formatted_text(phrase: Union[str, Phrase], formatters: str) -> str:
         """Formats a phrase according to formatters. formatters is a comma-separated string of formatters (e.g. 'CAPITALIZE_ALL_WORDS,DOUBLE_QUOTED_STRING')"""
         return FormatText(phrase, formatters)
 
     def list_formatters():
         """Lists all formatters"""
-        gui.show()
         gui.freeze()
 
     def hide_formatters():
         """Hides list of formatters"""
         gui.hide()
 
+    def clear_last_phrase():
+        """Clears the last formatted phrase"""
+        global last_formatted_phrase
+        for character in last_formatted_phrase:
+            actions.edit.delete()
+
+    def reformat_last_phrase(formatters: str) -> str:
+        """Reformats last formatted phrase"""
+        global last_phrase
+        return FormatText(last_phrase, formatters)
+
 @ctx.capture(rule='{self.formatters}+')
 def formatters(m):
     return ','.join(m.formatters_list)
 
-@ctx.capture(rule='<self.formatters> <phrase>')
+@ctx.capture(rule='<self.formatters> <user.text>')
 def format_text(m):
-    return FormatText(m.phrase, m.formatters)
+    return FormatText(m.text, m.formatters)
 
 ctx.lists['self.formatters'] = formatters_words.keys()
 
-@imgui.open()
+@imgui.open(software=False)
 def gui(gui: imgui.GUI):
     gui.text("List formatters")
     gui.line()
