@@ -4,6 +4,12 @@ spotlight: key(cmd-space)
 slap: key(enter)
 eski: key(escape)
 
+trash token: key(ctrl-w)
+end token: key(ctrl-a)
+
+github: "Github"
+livio: "Livio"
+
 vim append: key(shift-a)
 vim insert: key(i)
 
@@ -32,13 +38,29 @@ vim format: key(g g f)
 vim insert line up: key(shift-o)
 vim insert line down: key(o)
 
+fish again: key(up enter)
 fish complete: key(ctrl-f enter)
-
-trash token: key(ctrl-w)
-end token: key(ctrl-a)
+fish exit: "exit \n"
+fish clear: "clear \n"
 
 prefix: key(ctrl-space)
+prefix split: key(ctrl-space %)
+prefix new: key(ctrl-space ct topple)
+prefix toggle: key(ctrl-space ctrl-space)
+
+docker run: "docker run "
+docker compose run: "docker-compose run "
 
 jump:
   key(j)
   insert(' ')
+
+jump talon: "j talon\n"
+jump mono: "j mr\n"
+jump desktop: "j desktop\n"
+jump code: "j code\n"
+jump home: "j home\n"
+
+git feat: "feat: "
+git chore: "feat: "
+git fix: "feat: "
