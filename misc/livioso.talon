@@ -8,7 +8,7 @@ trash: key(ctrl-w)
 end token: key(ctrl-a)
 
 github: "Github"
-livio: "Livio"
+livio: "livio"
 
 vim append: key(shift-a)
 vim insert: key(i)
@@ -26,6 +26,7 @@ vim yank line: key(y y)
 vim paste: key(p)
 
 vim delete line: key(d d)
+vim quit: key(: q enter)
 vim close: key(: q enter)
 vim save: key(: w enter)
 vim files: key(space j)
@@ -45,7 +46,8 @@ fish clear: "clear \n"
 
 prefix: key(ctrl-space)
 prefix split: key(ctrl-space %)
-prefix new: key(ctrl-space ct topple)
+prefix new: key(ctrl-space c)
+prefix create: key(ctrl-space c)
 prefix toggle: key(ctrl-space ctrl-space)
 
 docker run: "docker run "
@@ -62,5 +64,5 @@ jump code: "j code\n"
 jump home: "j home\n"
 
 git feat: "feat: "
-git chore: "feat: "
-git fix: "feat: "
+git chore: "chore: "
+git fix: "fix: "
