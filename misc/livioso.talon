@@ -4,7 +4,7 @@ spotlight: key(cmd-space)
 slap: key(enter)
 eski: key(escape)
 
-trash token: key(ctrl-w)
+trash: key(ctrl-w)
 end token: key(ctrl-a)
 
 github: "Github"
