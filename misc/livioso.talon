@@ -7,8 +7,9 @@ eski: key(escape)
 trash: key(ctrl-w)
 end token: key(ctrl-a)
 
-github: "Github"
+github: "github"
 livio: "livio"
+spotify: "spotify"
 
 vim append: key(shift-a)
 vim insert: key(i)
