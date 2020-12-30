@@ -1,7 +1,9 @@
 os: linux
 tag: terminal
 -
-tag(): file_manager
+tag(): user.file_manager
+#todo: generic tab commands
+#tag(): tabs
 action(edit.page_down):
   key(shift-pagedown)
 action(edit.page_up):
@@ -31,9 +33,9 @@ kill all:
 action(edit.find):
   key(ctrl-shift-f)
 action(edit.word_left):
-  key(ctrl-w-left)
+  key(ctrl-w left)
 action(edit.word_right):
-  key(ctrl-w-right)
+  key(ctrl-w right)
 action(app.tab_open):
   key(ctrl-shift-t)
 action(app.tab_close):
