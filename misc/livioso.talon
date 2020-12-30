@@ -8,8 +8,11 @@ trash: key(ctrl-w)
 end token: key(ctrl-a)
 
 github: "github"
+livia: "livio"
 livio: "livio"
 spotify: "spotify"
+falls: "false"
+true: "true"
 
 vim append: key(shift-a)
 vim insert: key(i)
